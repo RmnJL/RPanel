@@ -122,9 +122,19 @@ SSL устанавливается на порт, который вы опред
 
 
 
-## Звезды в течение времени
+## Быстрая установка (Quick Install)
 
-[![Звезды в течение времени](https://starchart.cc/xpanel-cp/XPanel-SSH-User-Management.svg)](https://starchart.cc/xpanel-cp/XPanel-SSH-User-Management)
+Для быстрой установки RPanel выполните:
+
+```bash
+wget -O install.sh https://raw.githubusercontent.com/RmnJL/RPanel/main/install.sh && bash install.sh
+```
+
+Или для загрузки полного исходного кода:
+
+```bash
+wget https://github.com/RmnJL/RPanel/archive/refs/heads/main.zip
+```
 
 
 

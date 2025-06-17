@@ -125,7 +125,19 @@ bash <(curl -Ls https://raw.githubusercontent.com/xpanel-cp/XPanel-SSH-User-Mana
 4- دستور بالا را در ترمینال وارد کنید و مراحل نصب را پیش بروید<br>
 SSL بر روی پورتی که روی پنل تعریف کرده اید نصب فعال شد. <br>
 
+## نصب سریع (Quick Install)
 
+برای نصب سریع RPanel، دستور زیر را اجرا کنید:
+
+```bash
+wget -O install.sh https://raw.githubusercontent.com/RmnJL/RPanel/main/install.sh && bash install.sh
+```
+
+یا برای دریافت سورس کامل:
+
+```bash
+wget https://github.com/RmnJL/RPanel/archive/refs/heads/main.zip
+```
 
 ## Stargazers over time
 

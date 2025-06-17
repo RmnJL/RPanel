@@ -111,6 +111,21 @@ With the above command you can install SSL on the panel **(First pay attention t
 
 
 
+## Quick Install
+
+To quickly install RPanel, run:
+
+```bash
+wget -O install.sh https://raw.githubusercontent.com/RmnJL/RPanel/main/install.sh && bash install.sh
+```
+
+Or to download the full source:
+
+```bash
+wget https://github.com/RmnJL/RPanel/archive/refs/heads/main.zip
+```
+
+
 ### Supporting us :hearts:
 If X-Panel has been useful to you with supporting us you can help developing this web application.<br>
 
