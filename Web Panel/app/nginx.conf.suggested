@@ -1,0 +1,7 @@
+server_tokens off;
+client_max_body_size 32M;
+keepalive_timeout 30;
+fastcgi_read_timeout 60;
+proxy_read_timeout 60;
+limit_conn_zone $binary_remote_addr zone=addr:10m;
+limit_conn addr 20;

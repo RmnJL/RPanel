@@ -67,39 +67,40 @@ RED=$(tput setaf 1)
 RESET=$(tput sgr0)
 function show_menu() {
     clear
-	echo -e "${GREEN}██╗░░██╗██████╗░░█████╗░███╗░░██╗███████╗██╗░░░░░"
-	echo -e "${GREEN}╚██╗██╔╝██╔══██╗██╔══██╗████╗░██║██╔════╝██║░░░░░"
-	echo -e "${GREEN}░╚███╔╝░██████╔╝███████║██╔██╗██║█████╗░░██║░░░░░"
-	echo -e "${GREEN}░██╔██╗░██╔═══╝░██╔══██║██║╚████║██╔══╝░░██║░░░░░"
-	echo -e "${GREEN}██╔╝╚██╗██║░░░░░██║░░██║██║░╚███║███████╗███████╗"
-	echo -e "${GREEN}╚═╝░░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═╝░░╚══╝╚══════╝╚══════╝"
-	echo -e "$BLUE┌────────────────────────────────────────────────────────────────•${NC}"
-	echo -e "$BLUE│$NC ${ORANGE}•${NC} Version: ${BLUE}$vx${NC}"
-	echo -e "$BLUE│$NC ${ORANGE}•${NC} SSH PORT: $sshport"
-	echo -e "$BLUE│$NC ${ORANGE}•${NC} Username: ${BLUE}$adminuser${NC}"
-	echo -e "$BLUE│$NC ${ORANGE}•${NC} Password: ${BLUE}$def_pw${NC}"
-	echo -e "$BLUE│$NC ${ORANGE}•${NC} XPanel Link: \"http://$domain:$def_port/$def_cp/login\""
-	echo -e "$BLUE│$NC ${ORANGE}•${NC} UPTime: $(uptime -p | sed 's/up //')"
-	echo -e "$BLUE└────────────────────────────────────────────────────────────────•${NC}"
-	echo -e "$BLUE•────────────────────────────────────────────────────────────────┐$NC"
-	echo -e " ${BLUE}[1]${NC} ${ORANGE}•${NC} ${WHITE}Change Username AND Password${NC}"
-	echo -e " ${BLUE}[2]${NC} ${ORANGE}•${NC} ${WHITE}Change Port SSH${NC}"
-	echo -e " ${BLUE}[3]${NC} ${ORANGE}•${NC} ${WHITE}Change Port SSH TLS${NC}"
-	echo -e " ${BLUE}[4]${NC} ${ORANGE}•${NC} ${WHITE}Update XPanel Nginx Web Server${NC}"
-	echo -e " ${BLUE}[5]${NC} ${ORANGE}•${NC} ${WHITE}Remove XPanel${NC}"
-	echo -e " ${BLUE}[6]${NC} ${ORANGE}•${NC} ${WHITE}Remove All Admin XPanel${NC}"
-	echo -e " ${BLUE}[7]${NC} ${ORANGE}•${NC} ${WHITE}Blocked Port 80 and 443 IRAN${NC}"
-	echo -e " ${BLUE}[8]${NC} ${ORANGE}•${NC} ${WHITE}UnBlock Port 80 and 443 IRAN${NC}"
-	echo -e " ${BLUE}[9]${NC} ${ORANGE}•${NC} ${WHITE}Install Dropbear${NC}"
-	echo -e " ${BLUE}[10]${NC} ${ORANGE}•${NC} ${WHITE}Install WordPress${NC}"
-	echo -e " ${BLUE}[11]${NC} ${ORANGE}•${NC} ${WHITE}Fix Call (UDPGW)${NC}"
-	echo -e " ${BLUE}[12]${NC} ${ORANGE}•${NC} ${WHITE}Sing-box${NC}"
+    echo -e "${GREEN}██████╗ ██████╗  █████╗ ███╗   ██╗███████╗██╗     "
+    echo -e "${GREEN}██╔══██╗██╔══██╗██╔══██╗████╗  ██║██╔════╝██║     "
+    echo -e "${GREEN}██████╔╝██████╔╝███████║██╔██╗ ██║█████╗  ██║     "
+    echo -e "${GREEN}██╔══██╗██╔═══╝ ██╔══██║██║╚██╗██║██╔══╝  ██║     "
+    echo -e "${GREEN}██║  ██║██║     ██║  ██║██║ ╚████║███████╗███████╗"
+    echo -e "${GREEN}╚═╝  ╚═╝╚═╝     ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚══════╝"
+    echo -e "$BLUE┌────────────────────────────────────────────────────────────────•${NC}"
+    echo -e "$BLUE│$NC ${ORANGE}•${NC} Version: ${BLUE}$vx${NC}"
+    echo -e "$BLUE│$NC ${ORANGE}•${NC} SSH PORT: $sshport"
+    echo -e "$BLUE│$NC ${ORANGE}•${NC} Username: ${BLUE}$adminuser${NC}"
+    # حذف نمایش پسورد ادمین برای امنیت بیشتر
+    # echo -e "$BLUE│$NC ${ORANGE}•${NC} Password: ${BLUE}$def_pw${NC}"
+    echo -e "$BLUE│$NC ${ORANGE}•${NC} XPanel Link: \"http://$domain:$def_port/$def_cp/login\""
+    echo -e "$BLUE│$NC ${ORANGE}•${NC} UPTime: $(uptime -p | sed 's/up //')"
+    echo -e "$BLUE└────────────────────────────────────────────────────────────────•${NC}"
+    echo -e "$BLUE•────────────────────────────────────────────────────────────────┐$NC"
+    echo -e " ${BLUE}[1]${NC} ${ORANGE}•${NC} ${WHITE}Change Username AND Password${NC}"
+    echo -e " ${BLUE}[2]${NC} ${ORANGE}•${NC} ${WHITE}Change Port SSH${NC}"
+    echo -e " ${BLUE}[3]${NC} ${ORANGE}•${NC} ${WHITE}Change Port SSH TLS${NC}"
+    echo -e " ${BLUE}[4]${NC} ${ORANGE}•${NC} ${WHITE}Update XPanel Nginx Web Server${NC}"
+    echo -e " ${BLUE}[5]${NC} ${ORANGE}•${NC} ${WHITE}Remove XPanel${NC}"
+    echo -e " ${BLUE}[6]${NC} ${ORANGE}•${NC} ${WHITE}Remove All Admin XPanel${NC}"
+    echo -e " ${BLUE}[7]${NC} ${ORANGE}•${NC} ${WHITE}Blocked Port 80 and 443 IRAN${NC}"
+    echo -e " ${BLUE}[8]${NC} ${ORANGE}•${NC} ${WHITE}UnBlock Port 80 and 443 IRAN${NC}"
+    echo -e " ${BLUE}[9]${NC} ${ORANGE}•${NC} ${WHITE}Install Dropbear${NC}"
+    echo -e " ${BLUE}[10]${NC} ${ORANGE}•${NC} ${WHITE}Install WordPress${NC}"
+    echo -e " ${BLUE}[11]${NC} ${ORANGE}•${NC} ${WHITE}Fix Call (UDPGW)${NC}"
+    echo -e " ${BLUE}[12]${NC} ${ORANGE}•${NC} ${WHITE}Sing-box${NC}"
         echo -e " ${BLUE}[13]${NC} ${ORANGE}•${NC} ${WHITE}Install BBR${NC}"
-	echo -e "$BLUE•────────────────────────────────────────────────────────────────┘${NC}"
-	echo -e "$BLUE┌─────────────────────────┐${NC}"
-	echo -e "$BLUE│$NC ${BLUE}[0]${NC} ${ORANGE}•${NC} ${RED}Exit${NC}$NC"
-	echo -e "$BLUE└─────────────────────────┘${NC}"
-	echo -e ""
+    echo -e "$BLUE•────────────────────────────────────────────────────────────────┘${NC}"
+    echo -e "$BLUE┌─────────────────────────┐${NC}"
+    echo -e "$BLUE│$NC ${BLUE}[0]${NC} ${ORANGE}•${NC} ${RED}Exit${NC}$NC"
+    echo -e "$BLUE└─────────────────────────┘${NC}"
+    echo -e ""
 }
 
 # Function to select an option
@@ -107,51 +108,58 @@ function select_option() {
     read -p "Please enter the option number: " choice
     case $choice in
         1)
+            if ! command -v mysql &>/dev/null; then echo "MySQL is not installed!"; return; fi
             echo "Please enter a username: "
             read username
             echo "Please enter a Password: "
             read password
-            if [[ -n "${username}" ]]; then
-            username=${username}
+            if [[ -n "${username}" && -n "${password}" ]]; then
+                mysql -e "CREATE USER IF NOT EXISTS '${username}'@'localhost' IDENTIFIED BY '${password}';" && \
+                mysql -e "GRANT ALL ON *.* TO '${username}'@'localhost';" && \
+                sed -i "s/DB_USERNAME=$adminuser/DB_USERNAME=$username/" /var/www/html/app/.env && \
+                sed -i "s/DB_PASSWORD=.*/DB_PASSWORD=$password/g" /var/www/html/app/.env && \
+                mysql -e "USE XPanel_plus; UPDATE admins SET username = '${username}', password = '${password}' where id='1';"
+                echo "Username and password updated."
+            else
+                echo "Username or password is empty!"
             fi
-            if [[ -n "${password}" ]]; then
-            password=${password}
-            fi
-            mysql -e "CREATE USER '${username}'@'localhost' IDENTIFIED BY '${password}';" &
-            wait
-            mysql -e "GRANT ALL ON *.* TO '${username}'@'localhost';" &
-            sed -i "s/DB_USERNAME=$adminuser/DB_USERNAME=$username/" /var/www/html/app/.env
-            sed -i "s/DB_PASSWORD=.*/DB_PASSWORD=$password/g" /var/www/html/app/.env
-            mysql -e "USE XPanel_plus; UPDATE admins SET username = '${username}' where id='1';"
-            mysql -e "USE XPanel_plus; UPDATE admins SET password = '${password}' where id='1';"
             ;;
         2)
             echo "Please enter a SSH port:"
             read port
-            sed -i "s/Port.*/Port $port/" /etc/ssh/sshd_config
-            sed -i "s/PORT_SSH=.*/PORT_SSH=$port/g" /var/www/html/app/.env
-            sed -i "s/DEFAULT_HOST =.*/DEFAULT_HOST = '127.0.0.1:${port}'/g" /usr/local/bin/wss
-            systemctl daemon-reload
-            systemctl enable wss
-            systemctl restart wss
-            mysql -e "USE XPanel_plus; UPDATE settings SET ssh_port = '${port}' where id='1';"
-            reboot
+            if [[ -n "$port" ]]; then
+                sed -i "s/Port.*/Port $port/" /etc/ssh/sshd_config
+                sed -i "s/PORT_SSH=.*/PORT_SSH=$port/g" /var/www/html/app/.env
+                sed -i "s/DEFAULT_HOST =.*/DEFAULT_HOST = '127.0.0.1:${port}'/g" /usr/local/bin/wss
+                systemctl daemon-reload
+                systemctl enable wss
+                systemctl restart wss
+                mysql -e "USE XPanel_plus; UPDATE settings SET ssh_port = '${port}' where id='1';"
+                echo "SSH port updated. Please reboot manually if needed."
+            else
+                echo "Port is empty!"
+            fi
             ;;
         3)
             echo "Please enter a SSH TLS port:"
             read tlsport
-            echo "cert = /etc/stunnel/stunnel.pem
+            if [[ -n "$tlsport" ]]; then
+                echo "cert = /etc/stunnel/stunnel.pem
 [openssh]
 accept = $tlsport
 connect = 0.0.0.0:$sshport
-            " > /etc/stunnel/stunnel.conf
-            systemctl enable stunnel4
-            systemctl restart stunnel4
-            mysql -e "USE XPanel_plus; UPDATE settings SET tls_port = '${tlsport}' where id='1';"
-            reboot
+                " > /etc/stunnel/stunnel.conf
+                systemctl enable stunnel4
+                systemctl restart stunnel4
+                mysql -e "USE XPanel_plus; UPDATE settings SET tls_port = '${tlsport}' where id='1';"
+                echo "TLS port updated. Please reboot manually if needed."
+            else
+                echo "TLS port is empty!"
+            fi
             ;;
         4)
-            bash <(curl -Ls https://github.com/xpanel-cp/XPanel-SSH-User-Management/raw/master/install.sh --ipv4)
+            # تغییر لینک به سورس اختصاصی (در صورت نیاز اینجا لینک خودتان را قرار دهید)
+            bash <(curl -Ls https://github.com/RmnJL/RPanel/raw/main/install.sh --ipv4)
             ;;
         5)
         echo "You accept the risk of removing the panel (y/n)"

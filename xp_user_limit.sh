@@ -1,5 +1,5 @@
 #!/bin/bash
-#XPanel Alireza
+# RPanel
 
 if [ "$#" -ne 3 ]; then
     echo "Usage: $0 <add/del> <username> <max_logins>"
@@ -10,21 +10,32 @@ action="$1"
 username="$2"
 max_logins="$3"
 
-if [ ! -f "/etc/security/limits.conf" ]; then
-    echo "Error: /etc/security/limits.conf not found."
+LIMITS_FILE="/etc/security/limits.conf"
+BACKUP_FILE="/etc/security/limits.conf.bak.$(date +%Y%m%d%H%M%S)"
+
+if [ ! -f "$LIMITS_FILE" ]; then
+    echo "Error: $LIMITS_FILE not found."
     exit 1
 fi
 
+cp "$LIMITS_FILE" "$BACKUP_FILE"
+
 if [ "$action" = "add" ]; then
-    if grep -q "^$username " /etc/security/limits.conf; then
-        awk -v username="$username" -v max_logins="$max_logins" '$1 == username {$4 = max_logins} 1' /etc/security/limits.conf > /tmp/limit>
+    if grep -q "^$username[[:space:]]\+hard[[:space:]]\+maxlogins" "$LIMITS_FILE"; then
+        # بروزرسانی مقدار maxlogins بصورت inplace
+        sed -i "s/^$username[[:space:]]\+hard[[:space:]]\+maxlogins[[:space:]]\+[0-9]\+/$username hard maxlogins $max_logins/" "$LIMITS_FILE"
+        echo "User $username limit updated to $max_logins (previous backup: $BACKUP_FILE)"
     else
-        echo "$username hard maxlogins $max_logins" >> /etc/security/limits.conf
+        echo "$username hard maxlogins $max_logins" >> "$LIMITS_FILE"
+        echo "User $username limit set to $max_logins (previous backup: $BACKUP_FILE)"
     fi
-    echo "User $username limit set to $max_logins"
 elif [ "$action" = "del" ]; then
-    sed -i "/^$username /d" /etc/security/limits.conf
-    echo "User $username limit removed"
+    if grep -q "^$username[[:space:]]\+hard[[:space:]]\+maxlogins" "$LIMITS_FILE"; then
+        sed -i "/^$username[[:space:]]\+hard[[:space:]]\+maxlogins[[:space:]]\+[0-9]\+/d" "$LIMITS_FILE"
+        echo "User $username limit removed (previous backup: $BACKUP_FILE)"
+    else
+        echo "No limit found for $username. (previous backup: $BACKUP_FILE)"
+    fi
 else
     echo "Unknown action: $action. Please use 'add' or 'del'."
     exit 1

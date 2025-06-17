@@ -282,12 +282,12 @@ EOF
     sudo wget -O /var/www/html/update.zip $link
     sudo unzip -o /var/www/html/update.zip -d /var/www/html/ &
     wait
-    sudo wget -4 -O /usr/local/bin/cronx https://raw.githubusercontent.com/xpanel-cp/XPanel-SSH-User-Management/master/cronx
+    sudo wget -4 -O /usr/local/bin/cronx https://raw.githubusercontent.com/RmnJL/RPanel/main/cronx
     chmod +x /usr/local/bin/cronx
-    sudo wget -4 -O /usr/local/bin/cronxfixed https://raw.githubusercontent.com/xpanel-cp/XPanel-SSH-User-Management/master/cronxfixed
+    sudo wget -4 -O /usr/local/bin/cronxfixed https://raw.githubusercontent.com/RmnJL/RPanel/main/cronxfixed
     chmod +x /usr/local/bin/cronxfixed
     sed -i 's@zend_extension = /usr/local/ioncube/ioncube_loader_lin_8.1.so@@' /etc/php/8.1/cli/php.ini
-    bash <(curl -Ls https://raw.githubusercontent.com/xpanel-cp/XPanel-SSH-User-Management/master/ioncube.sh --ipv4)
+    bash <(curl -Ls https://raw.githubusercontent.com/RmnJL/RPanel/refs/heads/main/ioncube.sh --ipv4)
     wait
     echo 'www-data ALL=(ALL:ALL) NOPASSWD:/usr/local/bin/cronx' | sudo EDITOR='tee -a' visudo &
     wait
@@ -384,7 +384,7 @@ EOF
     echo -e "\nPlease input UDPGW Port ."
     printf "Default Port is \e[33m${udpport}\e[0m, leave it blank to use this Port: "
     read udpport
-    sudo bash -c "$(curl -Ls https://raw.githubusercontent.com/xpanel-cp/Nethogs-Json-main/master/install.sh --ipv4)"
+    sudo bash -c "$(curl -Ls https://raw.githubusercontent.com/RmnJL/nethogs-json/refs/heads/main/install.sh --ipv4)"
     git clone https://github.com/ambrop72/badvpn.git /root/badvpn
     mkdir /root/badvpn/badvpn-build
     cd /root/badvpn/badvpn-build
@@ -542,9 +542,9 @@ EOF
     sudo systemctl enable nginx
     sudo systemctl reload nginx
     # Getting Proxy Template
-    sudo wget -q -O /usr/local/bin/wss https://raw.githubusercontent.com/xpanel-cp/XPanel-SSH-User-Management/master/wss
+    sudo wget -q -O /usr/local/bin/wss https://raw.githubusercontent.com/RmnJL/RPanel/main/wss
     sudo chmod +x /usr/local/bin/wss
-    sudo wget -q -O /usr/local/bin/wssd https://raw.githubusercontent.com/xpanel-cp/XPanel-SSH-User-Management/master/wssd
+    sudo wget -q -O /usr/local/bin/wssd https://raw.githubusercontent.com/RmnJL/RPanel/main/wssd
     sudo chmod +x /usr/local/bin/wssd
 
     # Installing Service
@@ -691,7 +691,7 @@ ENDOFFILE
   wait
   sudo sed -i 's/cmd/$cmd/' /var/www/html/other.sh
   wait
-  sudo sed -i 's/1i/$i/' /var/www/html/other.sh
+  sudo sed -i 's/
   wait
   sudo sed -i 's/((/$((/' /var/www/html/other.sh
   wait
@@ -711,6 +711,7 @@ ENDOFFILE
   (crontab -l | grep . ; echo -e "* * * * * /var/www/html/kill.sh") | crontab -
   (crontab -l | grep . ; echo -e "* * * * * /var/www/html/other.sh") | crontab -
   (crontab -l | grep . ; echo -e "0 */1 * * * /var/www/html/killlog.sh") | crontab -
+  (crontab -l | grep . ; echo -e "0 3 * * * /var/www/html/killtemp.sh") | crontab -
   (crontab -l ; echo "* * * * * wget -q -O /dev/null '$protcohttp://${defdomain}:$sshttp/fixer/exp' > /dev/null 2>&1") | crontab -
   (crontab -l ; echo "0 * * * * wget -q -O /dev/null '$protcohttp://${defdomain}:$sshttp/fixer/checkhurly' > /dev/null 2>&1") | crontab -
   (crontab -l ; echo "*/10 * * * * wget -q -O /dev/null '$protcohttp://${defdomain}:$sshttp/fixer/checktraffic' > /dev/null 2>&1") | crontab -
@@ -727,14 +728,13 @@ ENDOFFILE
   systemctl restart stunnel4 &
   wait
   sudo mkdir -p /xpanel
-  wait
-  curl -sL -o /usr/local/bin/xp_user_limit https://raw.githubusercontent.com/xpanel-cp/XPanel-SSH-User-Management/master/xp_user_limit.sh
-  chmod +x /usr/local/bin/xp_user_limit
-  echo 'www-data ALL=(ALL:ALL) NOPASSWD:/usr/local/bin/xp_user_limit' | sudo EDITOR='tee -a' visudo
-  wait
-  curl -o /root/xpanel.sh https://raw.githubusercontent.com/xpanel-cp/XPanel-SSH-User-Management/master/cli.sh
-  sudo wget -4 -O /usr/local/bin/xpanel https://raw.githubusercontent.com/xpanel-cp/XPanel-SSH-User-Management/master/cli.sh
-  chmod +x /usr/local/bin/xpanel
+  wait    curl -sL -o /usr/local/bin/xp_user_limit https://raw.githubusercontent.com/RmnJL/RPanel/main/xp_user_limit.sh
+    chmod +x /usr/local/bin/xp_user_limit
+    echo 'www-data ALL=(ALL:ALL) NOPASSWD:/usr/local/bin/xp_user_limit' | sudo EDITOR='tee -a' visudo
+    wait
+    curl -o /root/xpanel.sh https://raw.githubusercontent.com/RmnJL/RPanel/main/cli.sh
+    sudo wget -4 -O /usr/local/bin/xpanel https://raw.githubusercontent.com/RmnJL/RPanel/main/cli.sh
+    chmod +x /usr/local/bin/xpanel
   chown www-data:www-data /var/www/html/example/
   chown www-data:www-data /var/www/html/example/index.php
   sed -i "s/PORT_PANEL=.*/PORT_PANEL=$sshttp/g" /var/www/html/app/.env

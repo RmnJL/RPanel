@@ -64,3 +64,11 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## پایداری و بهینه‌سازی
+
+- کش و سشن: استفاده از Redis و failover
+- لاگ: ذخیره روزانه و log rotation (14 روز)
+- پاک‌سازی خودکار لاگ و temp: اسکریپت killtemp.sh و کرون‌جاب
+- بهینه‌سازی artisan/composer/npm: دستور optimize
+- نمونه تنظیمات پیشنهادی php-fpm و nginx در فایل‌های php-fpm.conf.suggested و nginx.conf.suggested

@@ -1,8 +1,9 @@
 #!/bin/bash
+# RPanel
 def_port=$(grep "PORT_PANEL=" /var/www/html/app/.env | awk -F "=" '{print $2}')
 read -rp "Please enter the pointed domain / sub-domain name: " domain
-sudo apt install certbot python3-certbot-nginx
-sudo certbot --nginx -d $domain
+sudo apt update && sudo apt install -y certbot python3-certbot-nginx
+sudo certbot --nginx -d $domain || { echo "[خطا] صدور گواهی SSL ناموفق بود."; exit 1; }
 
 sudo tee /etc/nginx/sites-available/default <<'EOF'
 server {
@@ -100,68 +101,54 @@ server {
 EOF
 sed -i "s/serverPort/$def_port/g" /etc/nginx/sites-available/default
 sed -i "s/domin/$domain/g" /etc/nginx/sites-available/default
-sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
+sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
 
 sudo systemctl start nginx
 sudo systemctl enable nginx
 sudo systemctl reload nginx
 
-multiin=$(echo "https://${domain}:$def_port/fixer/multiuser")
+multiin="https://${domain}:$def_port/fixer/multiuser"
 cat > /var/www/html/kill.sh << ENDOFFILE
 #!/bin/bash
-#By Alireza
-i=0
-while [ 1i -lt 10 ]; do 
-cmd=(bbh '$multiin')
-echo cmd &
+#By RPanel
+for ((i=0;i<10;i++)); do
+  curl -s -H "A: B" "$multiin" &
   sleep 6
-  i=(( i + 1 ))
 done
 ENDOFFILE
-wait
-sudo sed -i 's/(bbh/$(curl -v -H "A: B"/' /var/www/html/kill.sh
-wait
-sudo sed -i 's/cmd/$cmd/' /var/www/html/kill.sh
-wait
-sudo sed -i 's/1i/$i/' /var/www/html/kill.sh
-wait
-sudo sed -i 's/((/$((/' /var/www/html/kill.sh
 chmod +x /var/www/html/kill.sh
-wait
-othercron=$(echo "https://${domain}:$def_port/fixer/other")
-  cat >/var/www/html/other.sh <<ENDOFFILE
+
+othercron="https://${domain}:$def_port/fixer/other"
+cat > /var/www/html/other.sh << ENDOFFILE
 #!/bin/bash
-#By Alireza
-i=0
-while [ 1i -lt 3 ]; do
-cmd=(bbh '$othercron')
-echo cmd &
-sleep 17
-i=(( i + 1 ))
+#By RPanel
+for ((i=0;i<3;i++)); do
+  curl -s -H "A: B" "$othercron" &
+  sleep 17
 done
 ENDOFFILE
-  wait
-  sudo sed -i 's/(bbh/$(curl -v -H "A: B"/' /var/www/html/other.sh
-  wait
-  sudo sed -i 's/cmd/$cmd/' /var/www/html/other.sh
-  wait
-  sudo sed -i 's/1i/$i/' /var/www/html/other.sh
-  wait
-  sudo sed -i 's/((/$((/' /var/www/html/other.sh
-  wait
-  chmod +x /var/www/html/other.sh
-  crontab -r
-(crontab -l | grep . ; echo -e "* * * * * /var/www/html/kill.sh") | crontab -
-(crontab -l | grep . ; echo -e "* * * * * /var/www/html/other.sh") | crontab -
-(crontab -l | grep . ; echo -e "0 */1 * * * /var/www/html/killlog.sh") | crontab -
-(crontab -l ; echo "* * * * * wget -q -O /dev/null 'https://${domain}:$def_port/fixer/exp' > /dev/null 2>&1") | crontab -
-(crontab -l ; echo "0 * * * * wget -q -O /dev/null 'https://${domain}:$def_port/fixer/checkhurly' > /dev/null 2>&1") | crontab -
-(crontab -l ; echo "*/10 * * * * wget -q -O /dev/null 'https://${domain}:$def_port/fixer/checktraffic' > /dev/null 2>&1") | crontab -
-(crontab -l ; echo "*/15 * * * * wget -q -O /dev/null 'https://${domain}:$def_port/fixer/checkfilter' > /dev/null 2>&1") | crontab -
-(crontab -l ; echo "0 0 * * * wget -q -O /dev/null ''https://${domain}:$def_port/fixer/send/email/3day' > /dev/null 2>&1") | crontab -
-(crontab -l ; echo "0 0 * * * wget -q -O /dev/null ''https://${domain}:$def_port/fixer/send/email/24h' > /dev/null 2>&1") | crontab -
+chmod +x /var/www/html/other.sh
+
+# حذف selective کرون‌جاب‌های پنل
+crontab -l 2>/dev/null | grep -vE '/var/www/html/(kill|other|killlog|dropbear|killtemp)\.sh|/fixer/|/send/email' | crontab -
+
+# افزودن کرون‌جاب‌های جدید بدون تکرار
+add_cron() {
+  local job="$1"
+  (crontab -l 2>/dev/null | grep -v -F -- "$job"; echo "$job") | crontab -
+}
+add_cron "* * * * * /var/www/html/kill.sh"
+add_cron "* * * * * /var/www/html/other.sh"
+add_cron "0 */1 * * * /var/www/html/killlog.sh"
+add_cron "0 3 * * * /var/www/html/killtemp.sh"
+add_cron "* * * * * wget -q -O /dev/null 'https://${domain}:$def_port/fixer/exp' > /dev/null 2>&1"
+add_cron "0 * * * * wget -q -O /dev/null 'https://${domain}:$def_port/fixer/checkhurly' > /dev/null 2>&1"
+add_cron "*/10 * * * * wget -q -O /dev/null 'https://${domain}:$def_port/fixer/checktraffic' > /dev/null 2>&1"
+add_cron "*/15 * * * * wget -q -O /dev/null 'https://${domain}:$def_port/fixer/checkfilter' > /dev/null 2>&1"
+add_cron "0 0 * * * wget -q -O /dev/null 'https://${domain}:$def_port/fixer/send/email/3day' > /dev/null 2>&1"
+add_cron "0 0 * * * wget -q -O /dev/null 'https://${domain}:$def_port/fixer/send/email/24h' > /dev/null 2>&1"
 if dpkg -l | grep -q dropbear; then
-(crontab -l | grep . ; echo -e "* * * * * /var/www/html/dropbear.sh") | crontab -
+  add_cron "* * * * * /var/www/html/dropbear.sh"
 fi
 clear
 printf "\nHTTPS Address : https://${domain}:$def_port/login \n"
