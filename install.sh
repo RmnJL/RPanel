@@ -903,6 +903,31 @@ startINSTALL
 checkDATABASE
 moreCONFIG
 endINSTALL
+# --- RPanel: Ensure .env and app directory always exist and have correct permissions ---
+# If .env file is missing, try to restore from backup or create a minimal one
+env_file="/var/www/html/app/.env"
+app_dir="/var/www/html/app"
+if [ ! -f "$env_file" ]; then
+  if [ -f "/var/www/html/.env_copy" ]; then
+    cp /var/www/html/.env_copy "$env_file"
+    echo "[RPanel] Restored .env from backup."
+  else
+    echo "[RPanel] .env missing, creating minimal .env file."
+    echo "DB_USERNAME=admin" > "$env_file"
+    echo "DB_PASSWORD=admin" >> "$env_file"
+    echo "PORT_PANEL=8080" >> "$env_file"
+    echo "PANEL_DIRECT=cp" >> "$env_file"
+  fi
+fi
+chown www-data:www-data "$env_file"
+chmod 644 "$env_file"
+if [ ! -d "$app_dir" ]; then
+  mkdir -p "$app_dir"
+  chown -R www-data:www-data "$app_dir"
+  chmod -R 755 "$app_dir"
+  echo "[RPanel] Created missing app directory."
+fi
+# --- End RPanel .env/app check ---
 # Check and display status for each package
 check_install software-properties-common
 check_install stunnel4
@@ -924,3 +949,8 @@ check_install php8.1-xml
 check_install php8.1-curl
 check_install cron
 check_install nethogs
+# Ensure correct permissions for .env and app directory
+chown www-data:www-data /var/www/html/app/.env
+chmod 644 /var/www/html/app/.env
+chown -R www-data:www-data /var/www/html/app
+chmod -R 755 /var/www/html/app
