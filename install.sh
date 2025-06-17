@@ -691,7 +691,6 @@ ENDOFFILE
   wait
   sudo sed -i 's/cmd/$cmd/' /var/www/html/other.sh
   wait
-  sudo sed -i 's/
   wait
   sudo sed -i 's/((/$((/' /var/www/html/other.sh
   wait
