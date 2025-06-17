@@ -275,6 +275,7 @@ EOF
     else
       touch /var/www/xpanelport
     fi
+    linkd="https://api.github.com/repos/RmnJL/RPanel/releases/latest"
     echo '#RPanel' >/var/www/xpanelport
     sudo sed -i -e '$a\'$'\n''RPanelport '$serverPort /var/www/xpanelport
     wait
@@ -551,7 +552,7 @@ EOF
     cat >/etc/systemd/system/wss.service <<END
 [Unit]
 Description=Python Proxy XPanel
-Documentation=https://t.me/Xpanelssh
+Documentation=https://t.me/myechos
 After=network.target nss-lookup.target
 
 [Service]
@@ -574,7 +575,7 @@ END
     cat >/etc/systemd/system/wssd.service <<END
 [Unit]
 Description=Python Proxy XPanel
-Documentation=https://t.me/Xpanelssh
+Documentation=https://t.me/RPanelssh
 After=network.target nss-lookup.target
 
 [Service]
