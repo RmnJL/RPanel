@@ -90,12 +90,12 @@ function show_menu() {
     echo -e " ${BLUE}[5]${NC} ${ORANGE}•${NC} ${WHITE}Remove XPanel${NC}"
     echo -e " ${BLUE}[6]${NC} ${ORANGE}•${NC} ${WHITE}Remove All Admin XPanel${NC}"
     echo -e " ${BLUE}[7]${NC} ${ORANGE}•${NC} ${WHITE}Blocked Port 80 and 443 IRAN${NC}"
-    echo -e " ${BLUE}[8]${NC} ${ORANGE}•${NC} ${WHITE}UnBlock Port 80 and 443 IRAN${NC}"
+    echo -e " ${BLUE}[8]${NC} ${ORANGE}•${NC}
     echo -e " ${BLUE}[9]${NC} ${ORANGE}•${NC} ${WHITE}Install Dropbear${NC}"
     echo -e " ${BLUE}[10]${NC} ${ORANGE}•${NC} ${WHITE}Install WordPress${NC}"
     echo -e " ${BLUE}[11]${NC} ${ORANGE}•${NC} ${WHITE}Fix Call (UDPGW)${NC}"
     echo -e " ${BLUE}[12]${NC} ${ORANGE}•${NC} ${WHITE}Sing-box${NC}"
-        echo -e " ${BLUE}[13]${NC} ${ORANGE}•${NC} ${WHITE}Install BBR${NC}"
+        echo -e " ${BLUE}[13]${NC} ${ORANGE}•${NC} ${WHITE}opiran vps optimizer${NC}"
     echo -e "$BLUE•────────────────────────────────────────────────────────────────┘${NC}"
     echo -e "$BLUE┌─────────────────────────┐${NC}"
     echo -e "$BLUE│$NC ${BLUE}[0]${NC} ${ORANGE}•${NC} ${RED}Exit${NC}$NC"
@@ -180,25 +180,27 @@ connect = 0.0.0.0:$sshport
         ;;
         
         7)
-        bash <(curl -Ls https://github.com/xpanel-cp/XPanel-SSH-User-Management/raw/master/block_iran.sh --ipv4)
+        bash <(curl -Ls https://raw.githubusercontent.com/RmnJL/RPanel/main/block_iran.sh)
         ;;
         8)
         sudo iptables -F
         ;;
         9)
-        bash <(curl -Ls https://raw.githubusercontent.com/xpanel-cp/Dropbear-ssh/main/install.sh)
+        bash <(curl -Ls https://raw.githubusercontent.com/RmnJL/dropbear/main/install.sh)
         ;;
         10)
-        bash <(curl -Ls https://raw.githubusercontent.com/xpanel-cp/XPanel-SSH-User-Management/master/wp-install.sh --ipv4)
+        bash <(curl -Ls https://raw.githubusercontent.com/RmnJL/RPanel/main/wp-install.sh)
         ;;
         11)
-        bash <(curl -Ls https://raw.githubusercontent.com/xpanel-cp/XPanel-SSH-User-Management/master/fix-call.sh --ipv4)
+        bash <(curl -Ls https://raw.githubusercontent.com/RmnJL/RPanel/main/fix-call.sh)
         ;; 
         12)
         bash <(curl -Ls https://raw.githubusercontent.com/xpanel-cp/XPanel-SSH-User-Management/master/OT/singbox.sh --ipv4)
         ;;
 	13)
-        bash <(curl -Ls https://raw.githubusercontent.com/teddysun/across/master/bbr.sh --ipv4)
+        sudo apt update && sudo apt upgrade -y
+        sudo apt install curl -y
+        bash <(curl -s https://raw.githubusercontent.com/opiran-club/VPS-Optimizer/main/optimizer.sh --ipv4)
         ;;
         0)
             echo "Exiting the menu."
