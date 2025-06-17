@@ -90,10 +90,10 @@ function show_menu() {
     echo -e " ${BLUE}[5]${NC} ${ORANGE}•${NC} ${WHITE}Remove XPanel${NC}"
     echo -e " ${BLUE}[6]${NC} ${ORANGE}•${NC} ${WHITE}Remove All Admin XPanel${NC}"
     echo -e " ${BLUE}[7]${NC} ${ORANGE}•${NC} ${WHITE}Blocked Port 80 and 443 IRAN${NC}"
-    echo -e " ${BLUE}[8]${NC} ${ORANGE}•${NC}
+    echo -e " ${BLUE}[8]${NC} ${ORANGE}•${NC} ${WHITE}Option 8${NC}"
     echo -e " ${BLUE}[9]${NC} ${ORANGE}•${NC} ${WHITE}Install Dropbear${NC}"
     echo -e " ${BLUE}[10]${NC} ${ORANGE}•${NC} ${WHITE}Install WordPress${NC}"
-    echo -e " ${BLUE}[11]${NC} ${ORANGE}•${NC} ${WHITE}Fix Call (UDPGW)${NC}"
+    echo -e " ${BLUE}[11]${NC} ${ORANGE}•${NC} ${WHITE}Fix Call UDPGW${NC}"
     echo -e " ${BLUE}[12]${NC} ${ORANGE}•${NC} ${WHITE}Sing-box${NC}"
         echo -e " ${BLUE}[13]${NC} ${ORANGE}•${NC} ${WHITE}opiran vps optimizer${NC}"
     echo -e "$BLUE•────────────────────────────────────────────────────────────────┘${NC}"

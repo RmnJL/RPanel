@@ -21,6 +21,10 @@ fi
 cp "$LIMITS_FILE" "$BACKUP_FILE"
 
 if [ "$action" = "add" ]; then
+    if ! id "$username" &>/dev/null; then
+        echo "User $username does not exist. Skipping limit set." >&2
+        exit 0
+    fi
     if grep -q "^$username[[:space:]]\+hard[[:space:]]\+maxlogins" "$LIMITS_FILE"; then
         # بروزرسانی مقدار maxlogins بصورت inplace
         sed -i "s/^$username[[:space:]]\+hard[[:space:]]\+maxlogins[[:space:]]\+[0-9]\+/$username hard maxlogins $max_logins/" "$LIMITS_FILE"

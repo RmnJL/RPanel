@@ -15,6 +15,16 @@ crontab -l | grep -vE '/var/www/html/(kill|other|killlog|dropbear|killtemp)\.sh|
 cat >/var/www/html/kill.sh <<'ENDOFFILE'
 #!/bin/bash
 #By RPanel
+# بررسی وضعیت multiuser از پنل قبل از اجرای kill
+PANEL_URL="$1"
+if [ -z "$PANEL_URL" ]; then
+  echo "[خطا] لطفاً آدرس پنل را به عنوان پارامتر وارد کنید. مثال: $0 http://domain:port"
+  exit 1
+fi
+multiuser_status=$(curl -s "$PANEL_URL/api/settings/multiuser")
+if [ "$multiuser_status" != "active" ]; then
+  exit 0
+fi
 for ((i=0;i<10;i++)); do
   curl -s -H "A: B" "$PANEL_URL/fixer/multiuser" &
   sleep 6
@@ -38,11 +48,11 @@ add_cron() {
   local job="$1"
   (crontab -l 2>/dev/null | grep -v -F -- "$job"; echo "$job") | crontab -
 }
-add_cron "* * * * * /var/www/html/kill.sh"
-add_cron "* * * * * /var/www/html/other.sh"
+add_cron "*/5 * * * * /var/www/html/kill.sh"
+add_cron "*/5 * * * * /var/www/html/other.sh"
 add_cron "0 */1 * * * /var/www/html/killlog.sh"
 add_cron "0 3 * * * /var/www/html/killtemp.sh"
-add_cron "* * * * * wget -q -O /dev/null '$PANEL_URL/fixer/exp' > /dev/null 2>&1"
+add_cron "*/5 * * * * wget -q -O /dev/null '$PANEL_URL/fixer/exp' > /dev/null 2>&1"
 add_cron "0 * * * * wget -q -O /dev/null '$PANEL_URL/fixer/checkhurly' > /dev/null 2>&1"
 add_cron "*/10 * * * * wget -q -O /dev/null '$PANEL_URL/fixer/checktraffic' > /dev/null 2>&1"
 add_cron "*/15 * * * * wget -q -O /dev/null '$PANEL_URL/fixer/checkfilter' > /dev/null 2>&1"
@@ -51,7 +61,7 @@ add_cron "0 0 * * * wget -q -O /dev/null '$PANEL_URL/fixer/send/email/24h' > /de
 
 # اگر dropbear نصب بود، کرون‌جابش را اضافه کن
 if dpkg -l | grep -q dropbear; then
-  add_cron "* * * * * /var/www/html/dropbear.sh"
+  add_cron "*/5 * * * * /var/www/html/dropbear.sh"
 fi
 
 sudo systemctl restart cron || sudo systemctl restart crond
