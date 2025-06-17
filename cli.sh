@@ -48,7 +48,8 @@ fi
 if [ "$domain" != "" ]; then
 domain=$domain
 else
-domain=$(curl -s https://ipinfo.io/ip)
+# استفاده از hostname -I به جای curl برای جلوگیری از خطای 403 و خروجی HTML
+domain=$(hostname -I | awk '{print $1}')
 fi
 if [ "$ssl" == "True" ]; then
 protcol=https
