@@ -668,7 +668,7 @@ ENDOFFILE
   wait
   sudo sed -i 's/cmd/$cmd/' /var/www/html/kill.sh
   wait
-  sudo sed -i 's/1i/$i/' /var/www/html/kill.sh
+  sudo sed -i 's/1i/$i/' /var
   wait
   sudo sed -i 's/((/$((/' /var/www/html/kill.sh
   wait
@@ -691,6 +691,7 @@ ENDOFFILE
   wait
   sudo sed -i 's/cmd/$cmd/' /var/www/html/other.sh
   wait
+  sudo sed -i 's/1i/$i/' /var/www/html/other.sh
   wait
   sudo sed -i 's/((/$((/' /var/www/html/other.sh
   wait
