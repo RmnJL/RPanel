@@ -3,11 +3,35 @@
 def_port=$(grep "PORT_PANEL=" /var/www/html/app/.env | awk -F "=" '{print $2}')
 read -rp "Please enter the pointed domain / sub-domain name: " domain
 sudo apt update && sudo apt install -y certbot python3-certbot-nginx
-sudo certbot --nginx -d $domain || { echo "[خطا] صدور گواهی SSL ناموفق بود."; exit 1; }
+
+# بررسی وجود بلاک server_name قبل از اجرای certbot
+nginx_conf="/etc/nginx/sites-available/default"
+if ! grep -q "server_name $domain;" "$nginx_conf"; then
+  # اضافه کردن بلاک موقت برای certbot
+  echo "server { listen 80; server_name $domain; root /var/www/html/example; }" > /tmp/rpanel_temp_server.conf
+  cat /tmp/rpanel_temp_server.conf >> "$nginx_conf"
+  sudo systemctl reload nginx
+fi
+
+# تلاش برای دریافت گواهی SSL با رفع خودکار خطاهای رایج
+certbot_out=$(sudo certbot --nginx -d $domain 2>&1)
+if echo "$certbot_out" | grep -q 'You have an existing certificate that has exactly the same domains'; then
+  # اگر گواهی موجود است و خطا داد، گزینه renew را غیرتعاملی انتخاب کن
+  sudo certbot renew --cert-name $domain --force-renewal --nginx
+elif echo "$certbot_out" | grep -q 'Could not automatically find a matching server block'; then
+  # اگر بلاک server نبود، مجدداً تلاش کن
+  sudo certbot --nginx -d $domain --force-renewal
+fi
+
+if [ ! -f "/etc/letsencrypt/live/$domain/fullchain.pem" ]; then
+  echo "[خطا] صدور گواهی SSL ناموفق بود. لطفاً لاگ certbot را بررسی کنید."
+  exit 1
+fi
 
 sudo tee /etc/nginx/sites-available/default <<EOF
 server {
     listen 80;
+    listen [::]:80;
     server_name $domain;
     root /var/www/html/example;
     index index.php index.html;
@@ -38,9 +62,11 @@ server {
 }
 server {
     listen 8443 ssl;
+    listen [::]:8443 ssl;
+    listen ${def_port} ssl;
     server_name $domain;
 
-    root /var/www/html/example;
+    root /var/www/html/cp;
     index index.php index.html;
 
     ssl_certificate /etc/letsencrypt/live/$domain/fullchain.pem;
@@ -149,3 +175,24 @@ if dpkg -l | grep -q dropbear; then
 fi
 clear
 printf "\nHTTPS Address : https://${domain}:$def_port/login \n"
+
+# راهنمای کاربر در صورت مشاهده خطای certbot
+cat <<'EOM'
+
+============================================================
+✅ اگر در مرحله صدور گواهی SSL با پیام خطا مواجه شدید اما فایل‌های گواهی در مسیر /etc/letsencrypt/live/$domain/ ساخته شدند، فقط کافیست nginx را ریستارت کنید و آدرس https را تست نمایید.
+
+🔹 اگر همچنان مشکل دارید:
+  sudo nginx -t
+  sudo systemctl status nginx
+
+🔹 مسیر گواهی در کانفیگ nginx به صورت خودکار تنظیم شده است:
+  ssl_certificate /etc/letsencrypt/live/$domain/fullchain.pem;
+  ssl_certificate_key /etc/letsencrypt/live/$domain/privkey.pem;
+
+🔹 اگر گواهی قبلاً صادر شده باشد، certbot ممکن است خطا دهد اما SSL شما فعال است.
+
+============================================================
+If you see a certbot error but certificate files exist in /etc/letsencrypt/live/$domain/, just restart nginx and test your https address.
+============================================================
+EOM
