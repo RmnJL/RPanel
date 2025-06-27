@@ -1,146 +1,136 @@
+<!-- RPanel - مدیریت حرفه‌ای SSH و سرور با پنل تحت وب -->
+
 <p align="center">
-<picture>
-<img width="160" height="160"  alt="XPanel" src="https://raw.githubusercontent.com/xpanel-cp/XPanel-SSH-User-Management/master/xlogo.png">
-</picture>
-  </p> 
-<h1 align="center"/>XPanel</h1>
-<h6 align="center">XPanel SSH User Management<h6>
-<p align="center">
-<img alt="GitHub all releases" src="https://img.shields.io/github/downloads/xpanel-cp/XPanel-SSH-User-Management/total">
-<img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/xpanel-cp/XPanel-SSH-User-Management">
-<a href="https://t.me/Xpanelssh" target="_blank">
-<img alt="Telegram Channel" src="https://img.shields.io/endpoint?label=Channel&style=flat-square&url=https%3A%2F%2Ftg.sumanjay.workers.dev%2FXPanelssh&color=blue">
-</a>
-</p>
- 
-<p align="center">
-	<a href="./README-EN.md">
-	English
-	</a>
-	/
-	<a href="./README-RU.md">
-	Russian
-	</a>
-	/
-	<a href="./README.md">
-	فارسی
-	</a>
+  <img width="160" height="160" alt="RPanel" src="xlogo.png">
 </p>
 
+<h1 align="center">RPanel</h1>
+<h4 align="center">پنل مدیریت SSH و سرور - نسخه Docker و سنتی</h4>
 
-### فهرست
-- [معرفی](#معرفی)<br>
-- [پرتکل](#پرتکل-)<br>
-- [امکانات](#امکانات)<br>
-- [نصب](#نصب) <br>
-  - [بهینه سازی سرور](#بهینه-سازی-سرور)<br>
-  - [فعال سازی SSL](#فعال-سازی-ssl)<br>
-- [حمایت از ما](#حمایت-از-ما-hearts)<br>
- 
-## معرفی <br>
-ایکس پنل یک نرم افزار تحت وب جهت مدیریت اکانت SSH می باشد. با کمک پنل تحت وب ایکس پنل می توانید کاربران را مدیریت کرده و محدودیت اعمال کنید.
+---
 
-## پرتکل <br>
-پرتکل هایی که ایکس پنل پشتیبانی می کند.<br>
-:white_check_mark:  `SSH-DIRECT`  :white_check_mark:  `SSH-TLS` :white_check_mark:  `SSH-DROPBEAR`  :white_check_mark:  `SSH-DROPBEAR-TLS` :white_check_mark:  `SSH-WEBSOCKET` <br>  
-:white_check_mark:  `SSH-WEBSOCKET-TLS` :white_check_mark:  `VMess ws`  :white_check_mark:  `VLess Reality` :white_check_mark:  `Hysteria2`  :white_check_mark:  `Tuic`  :white_check_mark:  `Shadowsocks`
+## فهرست مطالب
+- [معرفی](#معرفی)
+- [ویژگی‌ها](#ویژگی‌ها)
+- [پیش‌نیازها](#پیش‌نیازها)
+- [نصب سریع (سنتی)](#نصب-سنتی)
+- [نصب با Docker (پیشنهادی)](#نصب-با-docker)
+- [فعال‌سازی SSL](#فعال‌سازی-ssl)
+- [دستورات کاربردی](#دستورات-کاربردی)
+- [پشتیبانی و ارتباط](#پشتیبانی-و-ارتباط)
 
-پورت های 8443 و 80 و 8880 بصورت پیش فرض برای وب سرور رزور شده است. <br>
-Websocket HTTP Payload<br>
-`GET /ws HTTP/1.1[crlf]Host: sni.domain.com[crlf]Upgrade: websocket[crlf][crlf]` 
-Websocket SSL Payload<br>
-`GET wss://sni.domain.com/ws HTTP/1.1[crlf]Host: sni.domain.com[crlf]Upgrade: websocket[crlf][crlf]` <br>
+---
 
-## امکانات <br>
-:green_circle: ایجاد کاربر بدون محدودیت <br>
-:green_circle: اعمال محدودیت در حجم مصرفی و تاریخ انقضا<br>
-:green_circle: قابلیت محاسبه تاریخ انقضا در اولین اتصال<br>
-:green_circle: اعمال محدودیت در چند کاربره بودن اکانت<br>
-:green_circle: مشاهده کاربران آنلاین<br>
-:green_circle: امکان بکاپ گیری از کاربران و ریستور بکاپ<br>
-:green_circle: ربات تلگرام <br>
-:green_circle: تنظیم پورت ورود برای پنل<br>
-:green_circle: فیک آدرس (جلوگیری از فیلترینگ) <br>
-:green_circle: محدودیت IP(جلوگیری از ورود کاربران به برخی سایت ها)<br>
-:green_circle: اتصال API<br>
-:green_circle: مولتی سرور(به زودی) <br>
-:green_circle: چرخش IP <br>
-:green_circle: ارسال اطلاعات اشتراک به ایمیل <br>
-:green_circle: اضافه شدن هسته SING-BOX <br>
+## معرفی
+RPanel یک پنل تحت وب برای مدیریت حرفه‌ای کاربران SSH، مانیتورینگ، محدودیت ترافیک، چندکاربره، ربات تلگرام و امکانات پیشرفته سرور است. این پروژه بر پایه Laravel و Nginx توسعه یافته و به راحتی روی سرور یا Docker قابل اجراست.
 
-## Telegram Channel:
-https://t.me/Xpanelssh
+---
 
-## حمایت از ما :hearts:
-حمایت های شما برای ما دلگرمی بزرگی است<br> 
-<p align="left">
-<a href="https://plisio.net/donate/KL6W5z8k" target="_blank"><img src="https://plisio.net/img/donate/donate_light_icons_mono.png" alt="Donate Crypto on Plisio" width="240" height="80" /></a><br>
-	
-|                    TRX                   |                       ETH                         |                    Litecoin                       |
-| ---------------------------------------- |:-------------------------------------------------:| -------------------------------------------------:|
-| ```TYQraQ5JJXKyVD6BpTGoDYNhiLbFRfzVtV``` |  ```0x6cc08b2057EfAe4d76Af531e145DeEd4B73c9D7e``` | ```ltc1q6gq4espx74lp6jvhmr0jmxlu4al0uwemmzwdv4``` |	
+## ویژگی‌ها
+- مدیریت کامل کاربران SSH و Dropbear
+- محدودیت ترافیک و تاریخ انقضا برای هر کاربر
+- مشاهده کاربران آنلاین و گزارش‌گیری
+- پشتیبانی از چندکاربره (multiuser)
+- ربات تلگرام و API
+- نصب و راه‌اندازی خودکار (auto-restore .env و app)
+- بهینه‌سازی کامل برای اجرا در Docker
+- بدون لینک خارجی و کاملاً مستقل
+- پشتیبانی از پروتکل‌های: SSH, SSH-TLS, Dropbear, WebSocket, VMess, VLess, Hysteria2, Tuic, Shadowsocks و ...
+- قابلیت فعال‌سازی SSL و فیک‌سرور
+- ابزارهای CLI و اسکریپت‌های مدیریتی
 
-</p>	
+---
 
-# نصب
+## پیش‌نیازها
+- Ubuntu 20.04 یا بالاتر (برای نصب سنتی)
+- Docker و Docker Compose (برای نصب پیشنهادی)
 
+---
 
-**سیستم عامل مورد نیاز**
-
-Ubuntu 18+ (پیشنهادی :Ubuntu 20)<br>
-
-تغییر نام کاربری، کلمه عبور و پورت همچنین حذف XPanel از روی سرور (نسخه 3.6 به بالاتر)
-```
-bash /root/xpanel.sh OR bash xpanel.sh  OR xpanel
-```
-برای نصب کافیست دستور زیر را وارد کنید<br>
-
-**Nginx Web Server**
-
-```
-bash <(curl -Ls https://raw.githubusercontent.com/xpanel-cp/XPanel-SSH-User-Management/master/install.sh --ipv4)
-```
-
-حل مشکل عدم ارتباط  تماس صوتی و تصویری در اپلیکشن
-```
-bash <(curl -Ls https://raw.githubusercontent.com/xpanel-cp/XPanel-SSH-User-Management/master/fix-call.sh --ipv4)
-```
-دستور بالا را در ترمینال وارد کنید سپس برای UDPGW پورت جدید تعریف کنید بهتر است به جای پورت 7300 پورت 7301 یا 7302 را تنظیم کنید
-<br>
-<br>
-
-## بهینه سازی سرور
-نصب و حذف تنظیمات با دستور زیر 
-```
-bash <(curl -Ls https://raw.githubusercontent.com/xpanel-cp/XPanel-SSH-User-Management/master/TCP-Tweaker --ipv4)
-```
-## فعال سازی SSL
-```
-bash <(curl -Ls https://raw.githubusercontent.com/xpanel-cp/XPanel-SSH-User-Management/master/ssl.sh --ipv4)
-```
-با استفاده از دستور بالا می توانید SSL را روی پنل نصب نمائید. به نکات زیر توجه کنید <br>
-1- حتما قبل از نصب SSL پنل را بروز کنید<br>
-2- از هیچ دستور دیگری برای فعال سازی SSL استفاده نکنید<br>
-3- دامنه یا ساب دامنه را به IP سرور متصل کنید <br>
-4- دستور بالا را در ترمینال وارد کنید و مراحل نصب را پیش بروید<br>
-SSL بر روی پورتی که روی پنل تعریف کرده اید نصب فعال شد. <br>
-
-## نصب سریع (Quick Install)
-
-برای نصب سریع RPanel، دستور زیر را اجرا کنید:
+## نصب سنتی (روش کلاسیک)
 
 ```bash
 wget -O install.sh https://raw.githubusercontent.com/RmnJL/RPanel/main/install.sh && bash install.sh
 ```
-
-یا برای دریافت سورس کامل:
-
+یا:
 ```bash
-wget https://github.com/RmnJL/RPanel/archive/refs/heads/main.zip
+bash <(curl -Ls https://raw.githubusercontent.com/RmnJL/RPanel/main/install.sh)
 ```
 
-## Stargazers over time
+پس از نصب، اطلاعات ورود و لینک پنل به شما نمایش داده می‌شود.
 
-[![Stargazers over time](https://starchart.cc/xpanel-cp/XPanel-SSH-User-Management.svg)](https://starchart.cc/xpanel-cp/XPanel-SSH-User-Management)
+---
+
+## نصب با Docker (پیشنهادی و سریع)
+
+1. کلون سورس:
+```bash
+git clone https://github.com/RmnJL/RPanel.git
+cd RPanel
+```
+2. تنظیم فایل env:
+```bash
+cp .env.example Web\ Panel/app/.env # یا فایل env مناسب خود را قرار دهید
+```
+3. اجرای Docker Compose:
+```bash
+docker compose up --build
+```
+یا اگر docker-compose کلاسیک دارید:
+```bash
+docker-compose up --build
+```
+
+- پس از اجرا، سرویس‌های nginx, php-fpm و mariadb به صورت خودکار بالا می‌آیند.
+- برای مشاهده پنل: آدرس `http://localhost:8080/cp/login` یا با توجه به پورت و دامنه خود مراجعه کنید.
+- برای تنظیمات بیشتر، فایل‌های `docker-compose.yml` و `Dockerfile` را ویرایش کنید.
+
+---
+
+## فعال‌سازی SSL
+
+برای فعال‌سازی SSL روی پنل:
+```bash
+bash <(curl -Ls https://raw.githubusercontent.com/xpanel-cp/XPanel-SSH-User-Management/master/ssl.sh --ipv4)
+```
+- قبل از فعال‌سازی، دامنه را به IP سرور متصل کنید.
+- مراحل نصب را طبق راهنما پیش بروید.
+
+---
+
+## دستورات کاربردی و مدیریت
+- تغییر نام کاربری و رمز ادمین:
+  ```bash
+  bash xpanel.sh
+  # یا
+  xpanel
+  ```
+- مشاهده وضعیت سرویس‌ها و لاگ‌ها:
+  ```bash
+  docker compose logs
+  # یا
+  docker-compose logs
+  ```
+- حذف کامل پنل:
+  ```bash
+  bash xpanel.sh > گزینه حذف
+  ```
+
+---
+
+## پشتیبانی و ارتباط
+- کانال تلگرام: [@Xpanelssh](https://t.me/Xpanelssh)
+- گیت‌هاب: [RPanel on GitHub](https://github.com/RmnJL/RPanel)
+
+---
+
+## لایسنس
+این پروژه متن‌باز است و تحت لایسنس MIT منتشر شده است.
+
+---
+
+<p align="center">
+  <b>RPanel - مدیریت آسان و حرفه‌ای سرور SSH</b>
+</p>
 
 
