@@ -48,8 +48,7 @@ fi
 if [ "$domain" != "" ]; then
 domain=$domain
 else
-# استفاده از hostname -I به جای curl برای جلوگیری از خطای 403 و خروجی HTML
-domain=$(hostname -I | awk '{print $1}')
+domain=$(curl -s https://ipinfo.io/ip)
 fi
 if [ "$ssl" == "True" ]; then
 protcol=https
@@ -211,6 +210,17 @@ connect = 0.0.0.0:$sshport
             echo "Invalid option."
             ;;
     esac
+}
+
+# Get server IP address safely (avoid external HTTP errors)
+get_server_ip() {
+  # Try to get public IP from hostname -I (first IP)
+  ip=$(hostname -I | awk '{print $1}')
+  # If empty, fallback to 127.0.0.1
+  if [ -z "$ip" ]; then
+    ip="127.0.0.1"
+  fi
+  echo "$ip"
 }
 
 # Main loop to display the menu and select an option
