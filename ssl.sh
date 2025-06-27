@@ -13,6 +13,16 @@ if ! grep -q "server_name $domain;" "$nginx_conf"; then
   sudo systemctl reload nginx
 fi
 
+# اطمینان از آماده بودن سیستم و اینترنت قبل از اجرای certbot
+sleep 3
+if ! ping -c 2 8.8.8.8 >/dev/null 2>&1; then
+  echo "[خطا] اتصال اینترنت برقرار نیست. لطفاً اینترنت سرور را بررسی کنید."; exit 1
+fi
+if ! ping -c 2 "$domain" >/dev/null 2>&1; then
+  echo "[خطا] دامنه $domain به سرور اشاره نمی‌کند یا قابل دسترسی نیست."; exit 1
+fi
+sleep 2
+
 # تلاش برای دریافت گواهی SSL با رفع خودکار خطاهای رایج
 certbot_out=$(sudo certbot --nginx -d $domain 2>&1)
 if echo "$certbot_out" | grep -q 'You have an existing certificate that has exactly the same domains'; then
