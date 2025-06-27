@@ -91,7 +91,7 @@ docker-compose up --build
 
 برای فعال‌سازی SSL روی پنل:
 ```bash
-bash <(curl -Ls https://raw.githubusercontent.com/xpanel-cp/XPanel-SSH-User-Management/master/ssl.sh --ipv4)
+bash <(curl -Ls https://raw.githubusercontent.com/RmnJL/RPanel/main/ssl.sh)
 ```
 - قبل از فعال‌سازی، دامنه را به IP سرور متصل کنید.
 - مراحل نصب را طبق راهنما پیش بروید.
