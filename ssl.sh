@@ -5,15 +5,15 @@ read -rp "Please enter the pointed domain / sub-domain name: " domain
 sudo apt update && sudo apt install -y certbot python3-certbot-nginx
 sudo certbot --nginx -d $domain || { echo "[خطا] صدور گواهی SSL ناموفق بود."; exit 1; }
 
-sudo tee /etc/nginx/sites-available/default <<'EOF'
+sudo tee /etc/nginx/sites-available/default <<EOF
 server {
     listen 80;
-    server_name example.com;
+    server_name $domain;
     root /var/www/html/example;
     index index.php index.html;
 
     location / {
-        try_files $uri $uri/ /index.php?$query_string;
+        try_files \$uri \$uri/ /index.php?\$query_string;
     }
     location ~ \.php$ {
         include snippets/fastcgi-php.conf;
@@ -28,28 +28,28 @@ server {
     proxy_pass http://127.0.0.1:8880/;
     proxy_redirect off;
     proxy_http_version 1.1;
-    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Upgrade \$http_upgrade;
     proxy_set_header Connection "upgrade";
-    proxy_set_header Host $host;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host \$host;
+    proxy_set_header X-Real-IP \$remote_addr;
+    proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
     proxy_read_timeout 52w;
     }
 }
 server {
     listen 8443 ssl;
-    server_name example.com;
+    server_name $domain;
 
     root /var/www/html/example;
     index index.php index.html;
 
-    ssl_certificate /etc/letsencrypt/live/domin/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/domin/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/$domain/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/$domain/privkey.pem;
     ssl_protocols TLSv1.2 TLSv1.3;
     ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
 
     location / {
-        try_files $uri $uri/ /index.php?$query_string;
+        try_files \$uri \$uri/ /index.php?\$query_string;
     }
 
     location ~ \.php$ {
@@ -61,33 +61,32 @@ server {
     location ~ /\.ht {
         deny all;
     }
-
     location /ws {
-        if ($http_upgrade != "websocket") {
+        if (\$http_upgrade != "websocket") {
                 return 404;
         }
         proxy_pass http://127.0.0.1:8880;
         proxy_redirect off;
         proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Upgrade \$http_upgrade;
         proxy_set_header Connection "upgrade";
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
         proxy_read_timeout 52w;
     }
 }
 server {
-    listen serverPort ssl;
-    server_name example.com;
+    listen ${def_port} ssl;
+    server_name $domain;
     root /var/www/html/cp;
     index index.php index.html;
 
-    ssl_certificate /etc/letsencrypt/live/domin/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/domin/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/$domain/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/$domain/privkey.pem;
     
     location / {
-        try_files $uri $uri/ /index.php?$query_string;
+        try_files \$uri \$uri/ /index.php?\$query_string;
     }
     location ~ \.php$ {
         include snippets/fastcgi-php.conf;
@@ -99,8 +98,6 @@ server {
     }
 }
 EOF
-sed -i "s/serverPort/$def_port/g" /etc/nginx/sites-available/default
-sed -i "s/domin/$domain/g" /etc/nginx/sites-available/default
 sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
 
 sudo systemctl start nginx
